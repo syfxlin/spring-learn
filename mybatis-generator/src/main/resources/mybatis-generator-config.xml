@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- 引入配置文件 -->
+    <properties resource="application-dev.properties"/>
+    <!-- targetRuntime 可以设置为 MyBatis3 和 MyBatis3Simple，Simple 不会包含 Example -->
+    <context id="Learn" targetRuntime="MyBatis3">
+        <!-- 引入插件 -->
+        <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin" />
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin" />
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+        <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin" />
+
+        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="me.ixk.mybatis_generator.entity"
+                            targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+<!--        <sqlMapGenerator targetPackage="me.ixk.mybatis_generator.mapper"-->
+<!--                         targetProject="./src/main/resources/mapper">-->
+<!--            <property name="enableSubPackages" value="true" />-->
+<!--        </sqlMapGenerator>-->
+
+        <javaClientGenerator type="ANNOTATEDMAPPER"
+                             targetPackage="me.ixk.mybatis_generator.mapper"
+                             targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <table tableName="users" />
+    </context>
+</generatorConfiguration>
