@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title th:text="title"></title>
+  </head>
+  <body>
+    <ul>
+      <li th:each="user : ${users}">
+        name: [[${user.getName()}]], age: [[${user.getAge()}]], uuid:
+        [[${user.getUuid()}]]
+      </li>
+    </ul>
+  </body>
+</html>

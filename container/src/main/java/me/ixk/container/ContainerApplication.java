@@ -44,4 +44,10 @@ public class ContainerApplication {
         return (user1 == user2) + " " + (user3 == user4) + " " + user5.getUsername();
         // true false
     }
+
+    @GetMapping("/cond")
+    public String cond() {
+        return applicationContext.getBean("condition", String.class);
+        // cond1
+    }
 }

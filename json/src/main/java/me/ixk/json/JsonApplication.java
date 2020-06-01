@@ -1,6 +1,8 @@
 package me.ixk.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import me.ixk.json.utils.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -24,5 +26,15 @@ public class JsonApplication {
         String jsonString = "{\"name\": \"syfxlin\", \"password\": \"123456\"}";
         Object obj = json.parse(jsonString, Object.class);
         return json.stringify(obj);
+    }
+
+    @Autowired
+    Gson gson;
+
+    @GetMapping("/gson")
+    public String gson() {
+        String jsonString = "{\"name\": \"syfxlin\", \"password\": \"123456\"}";
+        JsonObject object = gson.fromJson(jsonString, JsonObject.class);
+        return gson.toJson(object);
     }
 }
