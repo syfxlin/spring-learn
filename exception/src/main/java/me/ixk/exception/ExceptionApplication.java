@@ -1,6 +1,7 @@
 package me.ixk.exception;
 
 import me.ixk.exception.exceptions.IdNotFoundException;
+import me.ixk.exception.exceptions.NotFoundException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,5 +21,10 @@ public class ExceptionApplication {
             throw new IdNotFoundException();
         }
         return "id: " + id;
+    }
+
+    @GetMapping("/global")
+    public String global() {
+        throw new NotFoundException("Global Error");
     }
 }
