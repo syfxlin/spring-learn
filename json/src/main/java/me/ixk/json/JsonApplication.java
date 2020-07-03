@@ -18,6 +18,11 @@ public class JsonApplication {
         SpringApplication.run(JsonApplication.class, args);
     }
 
+    @GetMapping("/index")
+    public String index() {
+        return "123";
+    }
+
     @Autowired
     JSON json;
 
