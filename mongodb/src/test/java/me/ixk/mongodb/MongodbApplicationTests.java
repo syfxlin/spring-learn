@@ -2,9 +2,8 @@ package me.ixk.mongodb;
 
 import lombok.extern.slf4j.Slf4j;
 import me.ixk.mongodb.model.User;
+import me.ixk.mongodb.repository.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -17,12 +16,11 @@ import java.util.List;
 @SpringBootTest
 @Slf4j
 class MongodbApplicationTests {
-    private final Logger log = LoggerFactory.getLogger(
-        MongodbApplicationTests.class
-    );
-
     @Autowired
     MongoTemplate mongoTemplate;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Test
     void insertAndFind() {
@@ -47,6 +45,9 @@ class MongodbApplicationTests {
         Query query = Query.query(criteria);
         List<User> users = mongoTemplate.find(query, User.class);
         log.info("Users {}", users);
+
+        List<User> findByRepository = userRepository.findByUsername("syfxlin");
+        log.info("Find by repository {}", findByRepository);
 
         mongoTemplate.remove(savedUser);
     }
