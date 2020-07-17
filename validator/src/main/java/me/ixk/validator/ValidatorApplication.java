@@ -24,7 +24,7 @@ public class ValidatorApplication {
     }
 
     @GetMapping("/user")
-    public User user(@Valid User user) {
+    public User user(@Valid User user, @Valid User user1) {
         return user;
     }
 
