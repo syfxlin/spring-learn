@@ -74,7 +74,7 @@ public class JsonArgumentResolver implements HandlerMethodArgumentResolver {
       HttpServletRequest.class
     );
 
-    String body = (String) nativeWebRequest.getAttribute(
+    JsonNode body = (JsonNode) nativeWebRequest.getAttribute(
       JSON_REQUEST_ATTRIBUTE_NAME,
       NativeWebRequest.SCOPE_REQUEST
     );
@@ -83,15 +83,18 @@ public class JsonArgumentResolver implements HandlerMethodArgumentResolver {
       try {
         if (servletRequest != null) {
           body =
-            servletRequest
-              .getReader()
-              .lines()
-              .collect(Collectors.joining("\n"));
-        } else {
-          body = "";
+            JSON.parse(
+              servletRequest
+                .getReader()
+                .lines()
+                .collect(Collectors.joining("\n"))
+            );
         }
       } catch (final IOException e) {
-        body = "";
+        //
+      }
+      if (body == null) {
+        body = NullNode.getInstance();
       }
       nativeWebRequest.setAttribute(
         JSON_REQUEST_ATTRIBUTE_NAME,
@@ -100,6 +103,6 @@ public class JsonArgumentResolver implements HandlerMethodArgumentResolver {
       );
     }
 
-    return JSON.parse(body);
+    return body;
   }
 }
