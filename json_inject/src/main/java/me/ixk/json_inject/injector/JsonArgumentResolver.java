@@ -11,7 +11,6 @@ import me.ixk.json_inject.annotation.RequestJson;
 import me.ixk.json_inject.utils.Helper;
 import me.ixk.json_inject.utils.JSON;
 import org.springframework.core.MethodParameter;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -20,12 +19,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 public class JsonArgumentResolver implements HandlerMethodArgumentResolver {
   private static final String JSON_REQUEST_ATTRIBUTE_NAME = "JSON_REQUEST_BODY";
-
-  ConversionService convert;
-
-  public JsonArgumentResolver(ConversionService convert) {
-    this.convert = convert;
-  }
 
   @Override
   public boolean supportsParameter(final MethodParameter methodParameter) {
@@ -44,6 +37,9 @@ public class JsonArgumentResolver implements HandlerMethodArgumentResolver {
   )
     throws Exception {
     final JsonNode body = this.getJsonBody(nativeWebRequest);
+    if ("$body".equals(methodParameter.getParameterName())) {
+      return JSON.convertToObject(body, methodParameter.getParameterType());
+    }
     final JsonParam jsonParam = methodParameter.getParameterAnnotation(
       JsonParam.class
     );
@@ -70,10 +66,7 @@ public class JsonArgumentResolver implements HandlerMethodArgumentResolver {
         return null;
       }
     }
-    return convert.convert(
-      JSON.convertToObject(node, Object.class),
-      methodParameter.getParameterType()
-    );
+    return JSON.convertToObject(node, methodParameter.getParameterType());
   }
 
   private JsonNode getJsonBody(final NativeWebRequest nativeWebRequest) {
