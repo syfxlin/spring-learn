@@ -27,6 +27,11 @@ public class JsonInjectApplication {
     return key;
   }
 
+  @PostMapping("/no-name")
+  public String noName(@JsonParam final String key) {
+    return key;
+  }
+
   @PostMapping("/data-get")
   public String dataGet(@JsonParam(name = "key.sub") final String key) {
     return key;

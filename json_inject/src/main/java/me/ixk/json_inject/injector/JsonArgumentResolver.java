@@ -47,9 +47,9 @@ public class JsonArgumentResolver implements HandlerMethodArgumentResolver {
       RequestJson.class
     );
     JsonNode node = NullNode.getInstance();
-    if (jsonParam != null) {
+    if (jsonParam != null && !"".equals(jsonParam.name())) {
       node = Helper.dataGet(body, jsonParam.name(), NullNode.getInstance());
-    } else if (requestJson != null) {
+    } else {
       node = body.get(methodParameter.getParameterName());
     }
     if (node.isNull()) {
