@@ -2,6 +2,7 @@ package me.ixk.eureka_caller;
 
 import java.net.URI;
 import lombok.extern.slf4j.Slf4j;
+import me.ixk.eureka_caller.service.CallerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,9 @@ class EurekaCallerApplicationTests {
   @Autowired
   RestTemplate restTemplate;
 
+  @Autowired
+  CallerService callerService;
+
   @Test
   void getFromEurekaClient() {
     final URI uri = UriComponentsBuilder
@@ -24,5 +28,10 @@ class EurekaCallerApplicationTests {
       "Get from eureka-client: {}",
       restTemplate.getForObject(uri, String.class)
     );
+  }
+
+  @Test
+  void getFromFeign() {
+    log.info("Get from eureka-client(feign): {}", callerService.getIndex());
   }
 }
