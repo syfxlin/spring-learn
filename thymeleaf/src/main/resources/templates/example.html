@@ -5,11 +5,98 @@
     <title th:text="title"></title>
   </head>
   <body>
+    <!-- 消息 #{val} -->
+    <h1 th:text="#{example.welcome('Admin')}"></h1>
+    <!-- 变量 ${val} -->
+    <h1 th:text="${title}"></h1>
+    <!-- 选中表达式 -->
+    <div th:object="${user}">
+      <!-- 模板语法 |text| -->
+      <span th:text="|name: *{name}|"></span>
+    </div>
+    <!-- URL @{path} -->
+    <a th:href="@{/view}">view</a>
+    <!-- 默认表达式 -->
+    <p th:text="null ?: 'default value'"></p>
+    <!-- 转换表达式 -->
+    <!--<p th:text="${{user}}"></p>-->
+    <!-- HTML5 友好语法 -->
+    <p data-th-text="${title}"></p>
+    <!-- 循环 -->
     <ul>
       <li th:each="user : ${users}">
+        <!-- 内联表达式 -->
         name: [[${user.getName()}]], age: [[${user.getAge()}]], uuid:
         [[${user.getUuid()}]]
       </li>
     </ul>
+    <!-- Map 循环的元素是 Entry -->
+    <ul>
+      <li th:each="entry, iterStat : ${userMap}">
+        <span th:text="|name: ${entry.value.name}|"></span>
+        <!-- 迭代状态 -->
+        <span th:text="|index: ${iterStat.index}|"></span>
+        <span th:text="|size: ${iterStat.size}|"></span>
+        <span th:text="|isFirst: ${iterStat.first}|"></span>
+        <span th:text="|isLast: ${iterStat.last}|"></span>
+      </li>
+    </ul>
+    <!-- if 和 懒加载 -->
+    <span th:if="false" th:text="${lazy}"></span>
+    <!-- switch -->
+    <span th:switch="${true}">
+      <span th:case="true">true</span>
+      <span th:case="false">false</span>
+    </span>
+    <!-- 片段 -->
+    <div th:fragment="frag">
+      <p>Frag content</p>
+    </div>
+    <hr />
+    <!-- 模板语法 和 插入 -->
+    <div th:insert="~{example::frag}"></div>
+    <!-- 当前文件内选择 -->
+    <div th:insert="~{::frag}"></div>
+    <!-- 插入文件模板 -->
+    <div th:insert="~{frag}"></div>
+    <!-- 不通过 fragment 引用模板 -->
+    <div id="frag">
+      <p>Frag id</p>
+    </div>
+    <div th:insert="~{::#frag}"></div>
+    <!-- 替换 替换会把这里的标签替换成片段的标签 -->
+    <p th:replace="~{::frag}"></p>
+    <!-- 引入 引入会把片段的标签去掉 -->
+    <p th:include="~{::frag}"></p>
+    <!-- 片段变量 -->
+    <th:block th:fragment="frag-value(one, two)" th:remove="all">
+      <p th:text="|var1: ${one}, var2: ${two}|"></p>
+    </th:block>
+    <div th:include="~{::frag-value('one1', 'two2')}"></div>
+    <div th:include="~{::frag-value(one='one1', two='two2')}"></div>
+    <!-- 局部变量 -->
+    <div th:with="value = 'local value'">
+      <p th:text="${value}"></p>
+    </div>
+    <!-- th 注释 -->
+    <!--/*-->
+      <div>
+        you can see me only before Thymeleaf processes me!
+      </div>
+    <!--*/-->
+    <!-- 关闭内联 -->
+    <p th:inline="none">[[${value}]]</p>
+    <!-- 内联 JavaScript 代码 -->
+    <script th:inline="javascript">
+      window.inline1 = [[${title}]];
+      window.inline2 = [[${user}]]
+    </script>
+    <!-- 内联 CSS 代码 -->
+    <style th:inline="css">
+      .main:after {
+        /* 用注释声明 */
+        content: /*[[${title}]]*/ 'Demo';
+      }
+    </style>
   </body>
 </html>

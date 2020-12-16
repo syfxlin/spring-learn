@@ -7,6 +7,4 @@ package me.ixk.ssm.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import me.ixk.ssm.entity.Users;
 
-
-
 public interface UsersMapper extends BaseMapper<Users> {}
